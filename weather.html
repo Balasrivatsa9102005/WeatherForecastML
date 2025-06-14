@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather App</title>
+
+    
+    <link rel="stylesheet" href="{% static 'forecast/css/style.css' %}">
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<main class="{% if description %}{{ description|lower }}{% endif %}">
+    <div class="side-container">
+        <form method="POST" class="search-container">
+            {% csrf_token %}
+            <input type="text" name="city" class="geo-input" placeholder="Enter city">
+            <button type="submit" class="search-button">🔍</button>
+        </form>
+
+        <div class="day-stats">
+            <div class="day-stats__temperature">
+                <span class="day-stats__temperature_value">{{ temperature }}°</span>
+            </div>
+            <div class="day-stats__feelslike">
+                Feels like: {{ feels_like }}°
+            </div>
+            <ul class="day-stats__conditions">
+                <li>
+                    <span>Humidity</span>
+                    <span class="day-stats__conditions_text">{{ humidity }}%</span>
+                </li>
+                <li>
+                    <span>Pressure</span>
+                    <span class="day-stats__conditions_text">{{ pressure }} hPa</span>
+                </li>
+                <li>
+                    <span>Wind</span>
+                    <span class="day-stats__conditions_text">{{ wind_speed }} m/s</span>
+                </li>
+            </ul>
+        </div>
+
+        
+        <img src="{% static 'forecast/img/side-blur.png' %}" class="side-blur" alt="Side blur graphic" />
+    </div>
+
+    <div class="main-container">
+        <p class="secondary-title">Weather Forecast</p>
+        <h1 class="weather__primary-title">{{ description }}</h1>
+
+        <div class="weather__location">
+            <img src="{% static 'forecast/img/location.svg' %}" class="location-icon" alt="Location Icon" />
+            <p class="weather__location-text">{{ city }}, {{ country }}</p>
+        </div>
+
+        <p class="weather__primary-stats">
+            Max Temp: {{ max_temp }}° | Min Temp: {{ min_temp }}°
+        </p>
+
+        <ul class="forecast">
+            {% for item in forecast %}
+            <li class="forecast-item">
+                <span class="forecast-time">{{ item.time }}</span>
+                <span class="forecast-temperature">{{ item.temp }}°</span>
+                <span class="forecast-windtext">{{ item.wind }} m/s</span>
+            </li>
+            {% endfor %}
+        </ul>
+
+        <canvas id="chart" height="100"></canvas>
+    </div>
+</main>
+
+
+<script src="{% static 'forecast/js/chart.js' %}"></script>
+</body>
+</html>
