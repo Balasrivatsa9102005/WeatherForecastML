@@ -10,7 +10,7 @@ from datetime import datetime, timedelta
 import pytz
 import os
 
-API_KEY = "daeb730c699e42b81a6f31b63d7ddee7"
+API_KEY = "api key"
 BASE_URL = 'https://api.openweathermap.org/data/2.5/'
 
 def get_current_weather(city):
